@@ -1,144 +1,159 @@
 # Guia do Usuário
 
-## Visão Geral
+## Para Alunos (Consulta Pública)
 
-A plataforma **Informática para Internet** possui dois modos de uso: **consulta pública** (alunos) e **área administrativa** (professores). Este guia explica os dois fluxos e todas as funcionalidades disponíveis.
+### 1. Página Inicial
 
----
-
-## Fluxo do Aluno (Acesso Público)
-
-O aluno não precisa criar conta para acessar os materiais.
-
-### 1. Acessar a Home
-
-Acesse [informatica-para-internet.vercel.app](https://informatica-para-internet.vercel.app)
-
-Clique em **"Começar Agora"**.
+A Home (`/`) já exibe a lista de anos do curso como cards, com atalhos para **Buscar atividades** (`/buscar`) e **Sobre o projeto** (`/sobre`).
 
 ### 2. Selecionar o Ano
 
-A página `/` mostra os anos do curso como cards com metadados (disciplinas, atividades).
+Clique em um card de ano para ir a `/ano/:anoId` (ex: `/ano/1` para o 1º Ano), que mostra as disciplinas daquele ano.
 
 ### 3. Selecionar a Disciplina
 
-`/` exibe as disciplinas daquele ano.
+`/disciplina/:anoId/:disciplinaId` (ex: `/disciplina/1/logica`) mostra as atividades da disciplina, organizadas em abas por **categoria**: Questão, Atividade ou Tutorial — cada aba mostra a contagem de itens.
 
 ### 4. Selecionar a Atividade
 
-`/` mostra as atividades.
-
-Cada atividade pode exibir:
-- **Badge de dificuldade**: Fácil, Médio ou Difícil
-- **Tempo estimado**: ex: "30 min"
-- **Tags**: ex: Vue, JavaScript, Git
-- **Status**: Publicada ou Fixada (destaque)
-- **Prazo recomendado**: ex: "14/08/2026"
+Cada card de atividade exibe:
+- Número de ordem
+- Título e descrição
+- Badge **"Fixada"**, quando aplicável
+- Contagem de questões
 
 ### 5. Visualizar o Conteúdo
 
-A atividade abre com seus blocos de conteúdo. Veja a seção "Sistema de Blocos" abaixo para todos os tipos disponíveis.
+`/atividade/:disciplinaId/:atividadeId` abre a atividade com:
+- Cabeçalho com breadcrumb (Ano → Disciplina → Atividade)
+- Sumário (índice) dos blocos, quando há vários
+- Barra de progresso de leitura, que preenche conforme a rolagem
+- Os blocos de conteúdo propriamente ditos (veja "Sistema de Blocos" abaixo)
+- Botão de impressão, usando estilos dedicados (`print.css`) que ocultam elementos de interface
 
 ---
 
-## Fluxo do Professor (Área Administrativa)
+## Para Professores (Área Administrativa)
 
 ### 1. Fazer Login
 
-Acesse `/` e faça login com email e senha.
+Acesse `/perfil` e entre com e-mail e senha cadastrados (`POST /api/token/` no backend). Não existe conta de demonstração — o login sempre depende da API responder.
 
 ### 2. Criar Atividade
 
-Acesse `/`. Primeiro, selecione um **template**:
+Acesse `/criar-atividade`. O editor é dividido em:
 
-| Template | Bloco Inicial |
-|----------|---------------|
-| Em branco | Nenhum bloco |
-| Lista de exercícios | Título + Questões |
-| Aula prática | Título + Texto + Código + Exercício |
-| Trabalho | Título + Texto + Lista de tarefas |
-| Tutorial | Título + Passo a passo + Código |
-| Projeto | Título + Texto + Checklist + Requisitos |
-
-### 3. Preencher Dados Gerais
-
+**Capa e dados principais** (topo):
 | Campo | Obrigatório | Descrição |
 |-------|-------------|-----------|
+| Capa | Não | Imagem de capa, enviada direto do seu computador |
 | Título | Sim | Nome da atividade |
-| Descrição | Não | Breve descrição |
-| Ano | Sim | Ano do curso |
-| Disciplina | Sim | Disciplina do ano |
+| Descrição | Não | Breve descrição exibida nos cards |
+
+**Painel lateral "Organização / Detalhes / Publicação":**
+| Campo | Obrigatório | Descrição |
+|-------|-------------|-----------|
+| Categoria | Não (padrão: Atividade) | Questão, Atividade ou Tutorial |
+| Ano | Sim | Ano do curso (1º, 2º ou 3º) |
+| Disciplina | Sim | Disciplina do ano selecionado |
 | Dificuldade | Não | Fácil / Médio / Difícil |
-| Tempo estimado | Não | ex: "30 min", "1 hora" |
-| Tags | Não | Vue, JavaScript, Git, etc. |
-| Pré-requisitos | Não | "Recomenda-se concluir X antes" |
-| Data de publicação | Não | Programar publicação futura |
-| Prazo recomendado | Não | Data limite sugerida |
-| Fixar atividade | Não | Aparece primeiro na disciplina |
+| Tempo estimado | Não | Texto livre, ex: "45 min" |
+| Tags | Não | Digite e pressione Enter |
+| Pré-requisitos | Não | Texto livre |
+| Status | Não (padrão: Rascunho) | Rascunho / Publicada / Arquivada |
+| Prazo recomendado | Não | Data |
+| Fixar atividade | Não | Só habilitado quando o status é "Publicada" |
 
-### 4. Montar o Conteúdo em Blocos
+> Hoje, mudar o status para "Publicada" ou "Arquivada" **não** controla quem vê a atividade — ela aparece normalmente para qualquer visitante independentemente do status escolhido (é um metadado ainda sem efeito na listagem pública).
 
-Clique em **"Adicionar Bloco"** e escolha o tipo.
+### 3. Montar o Conteúdo em Blocos
 
-### 5. Visualizar e Salvar
+Clique em **"Adicionar bloco"** e escolha entre os 21 tipos disponíveis (veja "Sistema de Blocos"). Cada bloco pode ser:
+- Reordenado (**↑ / ↓** ou arrastando e soltando)
+- Duplicado
+- Excluído
+- Colapsado/expandido individualmente, ou todos de uma vez
 
-- Alterne entre **Editar ↔ Visualizar**
-- No preview, teste em **Celular** ou **Desktop**
-- Salve quando estiver pronto
+Blocos de Imagem, Galeria, Vídeo e Download têm um botão de **upload direto** — o arquivo é enviado ao servidor e a URL é preenchida automaticamente; também é possível colar uma URL manualmente em vez de enviar um arquivo.
+
+### 4. Visualizar e Salvar
+
+- Alterne entre **Editar ↔ Visualizar** (botão no topo do editor)
+- Ao criar uma atividade **nova**, o conteúdo é salvo automaticamente como rascunho no navegador (`localStorage`) enquanto você edita — ao reabrir o editor, um aviso oferece restaurar ou descartar esse rascunho. Isso não se aplica quando você está editando uma atividade já existente.
+- Atalho **Ctrl+S / Cmd+S** salva a atividade
+- Ao salvar, a atividade é validada: título, ano, disciplina e **pelo menos 1 bloco preenchido** são obrigatórios
+- Se você tentar sair com alterações não salvas, o sistema pede confirmação
+- Depois de salva, a atividade aparece na página da disciplina e pode ser **editada**, **duplicada** ou **excluída** por quem está logado, direto na lista
 
 ---
 
 ## Sistema de Blocos
 
-### Blocos de Conteúdo (existentes)
+### Blocos de Conteúdo (21 tipos)
 
 | Tipo | Descrição |
 |------|-----------|
-| Texto | Parágrafo explicativo ou enunciado |
+| Texto | Parágrafo explicativo |
 | Título | Subtítulo para organizar seções |
 | Markdown | Conteúdo formatado em Markdown |
 | Código | Exemplos de programação formatados |
-| Imagem | Imagem por URL com legenda |
+| Terminal | Comandos de terminal separados de código-fonte (`npm install`, `git clone`, etc.) |
+| Imagem | Upload direto ou URL, com texto alternativo |
+| Galeria | Múltiplas imagens, cada uma com upload próprio e legenda |
+| Vídeo | Upload de arquivo de vídeo, ou link do YouTube/Vimeo incorporado |
+| Embed | Iframe incorporado (CodePen, JSFiddle, etc.) |
 | Lista | Itens ordenados ou não ordenados |
-| Questão | Exercício com enunciado e alternativas |
-| Divisor | Separador visual entre seções |
-| Download | Arquivo para baixar (PDF, DOCX, ZIP, etc.) com ícone, nome e tamanho |
-| Links Externos | Referências para GitHub, documentação, vídeos, sites |
-| Vídeo | Vídeo do YouTube incorporado diretamente na atividade |
-| Aviso | Bloco colorido com tipos: Informação, Dica, Atenção, Importante, Erro comum |
-| Terminal | Comandos de terminal separados de código-fonte (npm install, git clone, etc.) |
-| Tabela | Tabela editável com linhas e colunas |
 | Passo a Passo | Sequência numerada: 01 → 02 → 03 → 04 |
 | Checklista | Lista de requisitos com checkbox: ☐ Item 1, ☐ Item 2 |
+| Tabela | Tabela editável com linhas e colunas |
+| Citação | Citação em destaque com autor |
+| Aviso | Bloco colorido com tipos: Informação, Dica, Atenção, Importante, Erro comum |
+| Link | Link único com rótulo e descrição |
+| Links Externos | Referências para GitHub, documentação, vídeos, sites |
+| Download | Upload direto ou URL de arquivo para baixar (PDF, DOCX, ZIP, etc.), com ícone, nome e tamanho |
+| Acordeão | Itens colapsáveis (perguntas e respostas) |
+| Divisor | Separador visual entre seções |
+| Questão | Exercício com enunciado e alternativas |
 
 ### Blocos de Questão Expandidos
 
-| Tipo | Descrição |
+| Tipo | Estrutura |
 |------|-----------|
-| Múltipla Escolha | Uma resposta correta entre alternativas |
-| Verdadeiro/Falso | Afirmação para julgar |
-| Discursiva | Resposta aberta em texto |
-| Programação | Código como resposta (com validação futura) |
-
+| Múltipla Escolha | Alternativas + índice da resposta correta |
+| Verdadeiro/Falso | Resposta booleana |
+| Discursiva | Apenas enunciado, sem resposta armazenada |
+| Programação | Linguagem + código esperado |
 
 ---
 
 ## Pesquisa
 
-Acesse `/` para pesquisar atividades.
+Acesse `/buscar` para pesquisar atividades. O atalho **Ctrl+K** abre a busca rapidamente.
 
 **Filtros de busca:**
 - Por título
-- Por tags
-- Por dificuldade
-- Por disciplina
-- Por ano
+- Por descrição
+- Por enunciados de questão
+- Por ano e disciplina
+
+> A busca filtra apenas as atividades já carregadas no navegador (não consulta o endpoint de busca do backend), então os resultados dependem das disciplinas que você já visitou/carregadas pelo app.
 
 ---
 
-## Páginas Disponíveis
+## Mapa de Rotas
 
 | Rota | Página | Acesso |
 |------|--------|--------|
-| `/` | Home | Público |
-| `/*` | Página 404 | Público |
+| `/` | Home (lista de anos) | Público |
+| `/anos` | *(redireciona para `/`)* | Público |
+| `/ano/:anoId` | Disciplinas do ano (ex: `/ano/1`) | Público |
+| `/disciplina/:anoId/:disciplinaId` | Atividades da disciplina (ex: `/disciplina/1/logica`) | Público |
+| `/atividade/:disciplinaId/:atividadeId` | Conteúdo da atividade em blocos | Público |
+| `/buscar` | Busca de atividades (atalho Ctrl+K) | Público |
+| `/sobre` | Página "Sobre" (conteúdo ainda placeholder) | Público |
+| `/perfil` | Login / painel administrativo | Público (login) |
+| `/criar-atividade` | Criar atividade | Autenticado |
+| `/editar-atividade/:disciplinaId/:atividadeId` | Editar atividade | Autenticado |
+| `/:pathMatch(.*)*` | Página 404 | Público |
+
+> Rotas protegidas (`/criar-atividade` e `/editar-atividade/...`) redirecionam para `/perfil` quando não há sessão ativa, preservando o destino na query `?redirect=...`.

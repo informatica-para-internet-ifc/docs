@@ -1,60 +1,52 @@
 # Introdução
 
-## O que é o Projeto
+## O Problema
 
-O **Informática para Internet** é uma plataforma web educacional desenvolvida para o **Curso Técnico em Informática do IFC Campus Araquari**. Ela centraliza todas as atividades, listas, projetos e materiais utilizados durante os três anos do curso em um único ambiente digital.
+O curso de Técnico em Informática gera uma grande quantidade de materiais distribuídos entre Google Drive, grupos de WhatsApp, Classroom e outros meios dispersos, dificultando a consulta e organização por parte dos alunos.
 
-A plataforma se divide em duas áreas:
-
-- **Consulta pública** — qualquer aluno acessa os materiais sem precisar criar conta
-- **Área administrativa** — professores autenticados criam e editam atividades
-
-## Proposta
-
-O curso de Técnico em Informática gera uma grande quantidade de materiais distribuídos em três anos, múltiplas disciplinas e diversos tipos de atividade. Sem uma plataforma centralizada, esses materiais ficam espalhados pelo sigaa, classroom, sites pessoais e github.
+## A Solução
 
 O projeto resolve isso oferecendo uma **biblioteca acadêmica estruturada** com navegação hierárquica:
 
 ```
-HOME
+HOME (/) — lista de anos
   ↓
-ANO (1º, 2º, 3º)
+ANO (/ano/:anoId) — 1º, 2º, 3º
   ↓
-DISCIPLINA (ex: Programação, Desenvolvimento Web)
+DISCIPLINA (/disciplina/:anoId/:disciplinaId) — ex: Lógica de Programação, Banco de Dados
   ↓
-ATIVIDADE (ex: Lista de Exercícios, Projeto Prático)
+ATIVIDADE (/atividade/:disciplinaId/:atividadeId) — categorizada como Questão, Atividade ou Tutorial
   ↓
-CONTEÚDO (blocos de texto, código, imagens, questões, tutoriais)
+CONTEÚDO (blocos de texto, código, imagens, vídeos, questões...)
 ```
 
 ## Público-Alvo
 
-| Perfil | Uso |
-|--------|-----|
-| **Alunos do curso** | Consultar atividades, listas e materiais de estudo |
-| **Professores** | Criar, editar e organizar conteúdos das disciplinas |
-| **Monitores** | Apoio pedagógico e auxílio na organização dos materiais |
+- **Alunos:** consultam o material livremente, sem necessidade de conta.
+- **Professores:** autenticam-se (e-mail/senha) para criar, editar, duplicar e excluir atividades pelo editor de blocos.
 
+## Objetivos do Projeto
 
-## Stack Tecnológica
+1. Centralizar o material didático do curso em um único lugar.
+2. Oferecer um editor de atividades flexível, baseado em blocos de conteúdo reordenáveis.
+3. Garantir acesso público e rápido, sem barreiras de login para quem só quer consultar.
+4. Ser leve, responsivo e acessível em qualquer dispositivo.
+
+## Stack e Ferramentas
 
 | Tecnologia | Uso |
 |------------|-----|
-| Vue 3 | Framework front-end (Composition API) |
-| Vite | Build tool e dev server |
-| Vue Router 5 | Navegação e rotas |
-| Pinia 3 | Gerenciamento de estado |
-| @mdi (Material Design Icons) | Ícones |
+| Vue 3 (`^3.5`) | Framework front-end (Composition API) |
+| Vite (`^8`) | Build tool e dev server |
+| Vue Router (`^5.2`) | Navegação e rotas |
+| Pinia (`^4`) | Gerenciamento de estado |
+| @mdi/font, @mdi/js | Ícones |
 | ESLint + Oxlint + Prettier | Qualidade e formatação do código |
-| Python 3 | Linguagem do backend |
-| Django | Framework backend (models, views, admin) |
-| PostgreSQL | Banco de dados relacional |
-| Django REST Framework | API REST (planejado) |
+| Python 3.10+ | Linguagem do backend |
+| Django (`>=5.1`) + Django REST Framework | Framework backend (models, views, admin, API) |
+| SQLite (dev) / PostgreSQL (produção) | Banco de dados relacional |
+| Cloudinary (opcional) | Armazenamento de mídia em produção |
 | Fabroku | Hospedagem e deploy (backend) |
 | Vercel | Hospedagem e deploy (frontend) |
 
-## Tecnologias Puras
-
-- **HTML5** → Estrutura semântica
-- **CSS3** → Estilos com variáveis CSS (temas, responsividade)
-- **JavaScript (ES6+)** → Lógica da aplicação
+Veja o detalhamento completo em [Arquitetura do Sistema](../arquitetura/README.md).

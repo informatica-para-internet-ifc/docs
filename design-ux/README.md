@@ -91,8 +91,6 @@ O projeto utiliza hierarquia tipográfica forte:
 
 ---
 
----
-
 ## Responsividade
 
 ### Breakpoints
@@ -106,14 +104,13 @@ O projeto utiliza hierarquia tipográfica forte:
 ### Adaptações por Página
 
 **Home (mobile < 480px):**
-- Título reduzido
-- Descrição compactada
-- Botão "Começar Agora" ocupa 100% da largura
+- Título e descrição reduzidos
+- Botões "Buscar atividades" / "Sobre o projeto" em coluna
 - Espaçamentos menores
+- A própria Home já lista os anos como cards (não existe mais uma página "Anos" separada — a rota `/anos` é só um redirect para `/`)
 
-**Anos (mobile):**
-- Cards mais compactos
-- Número do ano menor
+**Cards de ano/disciplina/atividade (mobile):**
+- Mais compactos, número/ícone menor
 - Informações organizadas verticalmente
 
 **Header:**
@@ -127,6 +124,25 @@ Desktop:  Cards em grid de 2-3 colunas
 Tablet:   Cards em grid de 2 colunas
 Mobile:   Cards em coluna única (empilhados)
 ```
+
+---
+
+## Feedback e Microinterações
+
+| Elemento | Componente | Comportamento |
+|----------|------------|----------------|
+| Notificações | `ToastStack.vue` + `useToast.js` | Fila de toasts (sucesso/erro/info) no canto da tela, com auto-dismiss (4.5s info/sucesso, 6s erro) |
+| Voltar ao topo | `BackToTop.vue` | Botão flutuante, aparece após rolagem |
+| Entrada de elementos | Diretiva `v-reveal` (`src/directives/vReveal.js`) | Fade/slide-in via `IntersectionObserver` ao entrar na viewport; respeita `prefers-reduced-motion` |
+| Copiar link/texto | `useClipboard.js` | Clipboard API com fallback via `document.execCommand('copy')` |
+| Navegação por teclado | Skip link (`App.vue`) | "Pular para o conteúdo" visível apenas ao focar via Tab |
+| Progresso de leitura | Barra em `AtividadeView.vue` | Preenche conforme a rolagem do conteúdo da atividade (0-100%) |
+
+## Impressão
+
+`src/assets/css/print.css` define estilos de impressão dedicados: elementos com a classe
+`.no-print` (botões de ação, breadcrumbs, toasts) são ocultados ao imprimir uma atividade
+(`AtividadeView.vue`), priorizando o conteúdo dos blocos.
 
 ---
 
